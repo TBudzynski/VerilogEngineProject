@@ -1,0 +1,55 @@
+module test_dodanie_5_rpm;
+
+	// Inputs
+	reg switch_6;
+	reg clk;
+	reg [6:0] we_rpm;
+	real i = 0;
+
+	// Outputs
+	wire [6:0] rpm;
+	wire sygnal_zmiany_rpm;
+	wire [6:0] wejsciowe_rpm;
+
+	// Instantiate the Unit Under Test (UUT)
+	dodanie_5_rpm uut (
+		.switch_6(switch_6), 
+		.clk(clk), 
+		.we_rpm(we_rpm), 
+		.rpm(rpm),
+		.sygnal_zmiany_rpm(sygnal_zmiany_rpm),
+		.wejsciowe_rpm(wejsciowe_rpm)
+	);
+
+	initial begin
+		// Initialize Inputs
+		switch_6 = 1;
+		clk = 0;
+		we_rpm = 0;
+
+		// Wait 100 ns for global reset to finish
+		#100;
+        
+		// Add stimulus here
+
+		while (i < 10000000) begin
+			#1;
+			if (i == 10000)
+				switch_6 = 0;
+			if (i == 10002) begin
+				switch_6 = 1;
+				we_rpm = 5;
+			end
+			if (i == 15000)
+				switch_6 = 0;
+			if (i == 15002) begin
+				switch_6 = 1;
+				we_rpm = 10;
+			end
+			clk = ~clk;
+			i = i + 0.5;
+		end
+			
+	end
+      
+endmodule

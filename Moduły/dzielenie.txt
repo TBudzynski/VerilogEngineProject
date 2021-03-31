@@ -1,0 +1,50 @@
+module dzielenie(
+	input clk,
+	input [6:0] B,
+	output reg [25:0] wynik
+    );
+	
+	reg [25:0] dzielna;
+	reg [6:0] dzielnik;
+	reg [26:0] pomoc;
+	reg [25:0] iloraz;
+	integer i = 25;
+	
+	always @(posedge clk) begin
+		
+		if (dzielnik != B) begin
+			i = 25;
+			pomoc = dzielna[25];
+			wynik = 'b11111111111111111111;
+		end
+		if (dzielnik != B || i != 0) begin
+			dzielnik = B;
+			
+			if (i != 0) begin			
+				if (pomoc < dzielnik) begin
+					pomoc = {pomoc, dzielna[i - 2]};
+					iloraz[i - 1] = 0;
+					i = i - 1;
+				end 
+				else if (pomoc >= dzielnik) begin
+					pomoc = {pomoc - dzielnik, dzielna[i - 2]};
+					iloraz[i - 1] = 1;
+					i = i - 1;
+				end
+			end
+			else if (i == 1) begin
+				if (pomoc < dzielnik) begin
+					iloraz[i - 1] = 0;
+					i = 0;
+				end 
+				else if (pomoc >= dzielnik) begin
+					iloraz[i - 1] = 1;
+					i = 0;
+				end
+			end
+			else if (i == 0) begin
+				wynik = iloraz;
+			end
+		end
+	end
+endmodule

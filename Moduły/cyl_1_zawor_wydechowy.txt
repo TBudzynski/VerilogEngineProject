@@ -1,0 +1,52 @@
+module cyl_1_zawor_wydechowy(
+	input clk,
+	input [6:0] rpm,
+	input sygnal_dodania_rpm,
+	input sygnal_odjecia_rpm,
+	input rozruch,
+	input [25:0] taktowanie_na_stopien,
+	output reg LED7
+    );
+	 
+	reg [31:0] taktowanie_na_720_stopni = 1;
+	parameter integer stopnie_kiedy_zaswiecic = 674;
+	parameter integer stopnie_kiedy_zgasic = 190;
+	reg [31:0] licznik = 'b00000000000000000000000000000000;
+	reg [11:0] zliczanie_obrotow = 0;
+	reg swieci = 0;
+	reg start = 0;
+	
+	always @(posedge clk) begin
+
+		if (sygnal_dodania_rpm == 1 || sygnal_odjecia_rpm == 1) begin
+			licznik = 'b00000000000000000000000000000000;
+			zliczanie_obrotow = 0;
+			swieci = 0;
+		end
+		
+		taktowanie_na_720_stopni = taktowanie_na_stopien * 720;
+		
+		if (rozruch == 1)
+			start = 1;
+		
+		if (licznik != taktowanie_na_720_stopni && start == 1) begin
+			licznik = licznik + 1;
+		end 
+		else if (licznik == taktowanie_na_720_stopni) begin
+			licznik = 'b00000000000000000000000000000000;
+			zliczanie_obrotow = zliczanie_obrotow + 1;
+		end
+			
+		if (licznik < taktowanie_na_stopien * stopnie_kiedy_zaswiecic && zliczanie_obrotow != 0 && licznik != 0) begin
+			if (licznik < taktowanie_na_stopien * stopnie_kiedy_zgasic)
+				swieci = 1;
+			if (licznik >= taktowanie_na_stopien * stopnie_kiedy_zgasic)
+				swieci = 0;	
+		end
+		if (licznik >= taktowanie_na_stopien * stopnie_kiedy_zaswiecic + 100) begin
+			swieci = 1;	
+		end
+		LED7 = swieci;
+	end
+endmodule
+

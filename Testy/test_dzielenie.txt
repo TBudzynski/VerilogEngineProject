@@ -1,0 +1,36 @@
+module test_dzielenie;
+
+	// Inputs
+	reg [31:0] dzielna;
+	reg [31:0] dzielnik;
+
+	// Outputs
+	wire [31:0] wynik;
+
+	// Instantiate the Unit Under Test (UUT)
+	dzielenie uut (
+		.A(dzielna), 
+		.B(dzielnik), 
+		.wynik(wynik)
+	);
+
+	initial begin
+		// Initialize Inputs
+		dzielna = 0;
+		dzielnik = 0;
+
+		// Wait 100 ns for global reset to finish
+		#100;
+        
+		// Add stimulus here
+		
+		dzielna = 100;
+		dzielnik = 2;
+		#100;
+		dzielna = 12000000;
+		dzielnik = 60;
+		#100;
+
+	end
+      
+endmodule

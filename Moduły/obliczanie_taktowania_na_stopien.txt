@@ -1,0 +1,32 @@
+module obliczanie_taktowania_na_stopien(
+	input clk,
+	input [6:0] rpm,
+	output reg [18:0] taktowanie_na_stopien
+    );
+	
+	always @(posedge clk) begin
+			case (rpm)
+				0 : taktowanie_na_stopien = 'b1111111111111111111;
+				5 : taktowanie_na_stopien = 400000;
+				10 : taktowanie_na_stopien = 200000;
+				15 : taktowanie_na_stopien = 133333;
+				20 : taktowanie_na_stopien = 100000;
+				25 : taktowanie_na_stopien = 80000;
+				30 : taktowanie_na_stopien = 66666;
+				35 : taktowanie_na_stopien = 57142;
+				40 : taktowanie_na_stopien = 50000;
+				45 : taktowanie_na_stopien = 44444;
+				50 : taktowanie_na_stopien = 40000;
+				55 : taktowanie_na_stopien = 36363;
+				60 : taktowanie_na_stopien = 33333;
+				65 : taktowanie_na_stopien = 30769;
+				70 : taktowanie_na_stopien = 28571;
+				75 : taktowanie_na_stopien = 26666;
+				80 : taktowanie_na_stopien = 25000;
+				85 : taktowanie_na_stopien = 23529;
+				90 : taktowanie_na_stopien = 22222;
+				95 : taktowanie_na_stopien = 21052;
+				default: taktowanie_na_stopien = 'b1111111111111111111;
+			endcase
+		end
+endmodule
